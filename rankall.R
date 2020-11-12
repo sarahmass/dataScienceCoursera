@@ -14,17 +14,46 @@
 ##              awarded to the hospital name that comes first alphabetically 
 
 rankall <- function(outcome,num = "best"){
-        source("rankhospital.R")
-        data = read.csv("outcome-of-care-measures.csv")
+        #source("rankhospital.R")
+        data = read.csv("outcome-of-care-measures.csv", 
+                        na.strings = "Not Available",
+                        stringsAsFactors = FALSE)
+        
+        ## get valid (unique) states and sort them alphabetically
         states = as.vector(unique(data$State))
-        #sort states in alphabetical order
         states <- states[order(states)]
-        results <- data.frame()
-        for (state in states){
-                Hospital<-rankhospital(state,outcome,num)
-                results<- rbind(results,data.frame(hospital = Hospital, state=state, row.names=state))
+        
+        ## associate outcome names and columns in the original data w/ each other. 
+        outnames<-c("heart attack"=11, 'heart failure'=17, 'pneumonia'=23)
+        if (!(outcome %in% names(outnames))){
+                stop("outcome must be 'heart attack','heart failure', or 'pneumonia'")
         }
+        ## get only necessary columns:
+        info <- data[,c(2,7,outnames[outcome])]
+        colnames(info) <- c('hospital', 'State', outcome)
+        info <- info[order(info[,2],info[,3],info[,1]),]
+        info <- info[complete.cases(info),]
+        
+        info <- split(info,info$State)
+        
+        
+        hosp_list<-sapply(info,function(x,n=num){
+                #print(x)
+                if (n=='best'){
+                        return(x[1,1])
+                }else if (n=='worst'){
+                        return(x[nrow(x),1])
+                }else {
+                        return(x[n,1])
+                }
+        })
+        # results <- data.frame()
+        # for (state in states){
+        #         Hospital<-rankhospital(state,outcome,num)
+        #         results<- rbind(results,data.frame(hospital = Hospital, state=state, row.names=state))
+        # }
         #rownames(results)<- states
         
-        results
+        cbind(hosp_list,states)
+        
 }
