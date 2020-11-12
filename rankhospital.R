@@ -16,7 +16,7 @@
 
 rankhospital <- function(state, outcome, num="best"){
         ## read outcome data
-        data <- read.csv("outcome-of-care-measures.csv", colClasses="character")
+        data <- read.csv("outcome-of-care-measures.csv")
         
         ## check that state and outcome are valid
         statesvec <- unique(data$State)
