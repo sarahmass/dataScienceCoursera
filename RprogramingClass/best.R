@@ -1,22 +1,18 @@
 ## function for programming assignment 3 in Rprogramming
 
-## rankhospital(state, outcome, num)
-##      state: the 2-character abbreviated name of a state
-##      outcome: "heart attack", "heart failure", or "pneumonia"
-##      num: "best", "worst", or a number,n, indicating the nth best hospital
-##           for the state and outcome pair
-## Source data is read from 'outcome-of-care-measures.csv' file.
-## Returns: a character vector with the name of the hospital
-##          that has the best (ie.lowest) 30-day mortality for 
-##          the specified outcome in given state.  
+## best takes two arguments: the 2-character abbreviated name of a state and the 
+## outcome name.  It reads the 'outcome-of-care-measures.csv' file and returns a
+## character vector with the name of the hospital that has the best (ie.lowest)
+## 30-day mortality for the specified outcome in given state.  Hospitals with no
+## data on "heart attack", "heart failure", or "pneumonia" are excluded from the
+## set of hospitals when deciding the rankings.
 
-## Tie-breaker: results are ordered first by rate (best to worst) then by 
-##              Hospital names in alphabetical order.So tie-breakers are 
-##              awarded to the hospital name that comes first alphabetically 
+## Data in the set should be sorted base on outcomes and then alphabetically by 
+## hospital names
 
-rankhospital <- function(state, outcome, num="best"){
+best <- function(state, outcome){
         ## read outcome data
-        data <- read.csv("outcome-of-care-measures.csv")
+        data <- read.csv("outcome-of-care-measures.csv", colClasses="character")
         
         ## check that state and outcome are valid
         statesvec <- unique(data$State)
@@ -47,18 +43,10 @@ rankhospital <- function(state, outcome, num="best"){
         #print(head(info))       
         ## return the hospital with best rate ties going to the hospital 
         ## that comes first alphabetically
-        
-        ## return the nth best, best or worst hospital for state and outcome
-        if (num==1 | num=="best"){
-                return(info[1,1])
-        }else if (num=="worst"){
-                return(info[nrow(info),1])
-        }else{
-                return(info[num,1])
-        }
+        info[1,1]
         
         
-        
-        
+
         
 }
+
