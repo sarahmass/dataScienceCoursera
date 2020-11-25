@@ -1,5 +1,5 @@
 # ReadMe
-## Purpose:
+### Purpose:
 This is a project for the 3rd course in Johns Hopkins University's Data Science 
 Specialization offered by [Coursera](http://coursera.org).  The projects requires
 that data to be gathered and tidied with the following stipulations:
@@ -20,7 +20,7 @@ Create one R script called run_analysis.R that does the following.
    subject.
 
 
-## Raw data:
+### Raw data:
 
 Source:
 Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. A Public Domain Dataset for Human Activity Recognition Using Smartphones. 21th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning, ESANN 2013. Bruges, Belgium 24-26 April 2013.
@@ -34,9 +34,9 @@ The original purpose of the data was to use it to train a Neural Network to clas
 The metric data collected for each subject for each activity have the 561 row names found in the feature.txt file in the UCI HAR Dataset Directory.  The metric variables are described in the feature_info.txt file.  
 
   
-## Getting and Cleaning the Data:
+### Getting and Cleaning the Data:
 
-The raw data as described above will be cleaned as described in the Purpose section.  I have included a [CodeBook.md]({add link}) to detail my process, the code in [run_analysis.R]({add link}), and the two data sets in {fill in the file names and links here}.
+The raw data as described above will be cleaned as described in the Purpose section.  I have included a [CodeBook.md]({add link}) to detail my process, the code in [run_analysis.R](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/run_analysis.R), and the two data sets in [subActivity_all.csv](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/subActivity_all.csv) and [SubActivity_means.csv](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/SubActivity_means.csv).
 
 
 

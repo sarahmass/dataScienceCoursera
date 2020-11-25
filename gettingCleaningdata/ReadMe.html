@@ -415,8 +415,8 @@ summary {
 
 <div id="readme" class="section level1">
 <h1>ReadMe</h1>
-<div id="purpose" class="section level2">
-<h2>Purpose:</h2>
+<div id="purpose" class="section level3">
+<h3>Purpose:</h3>
 <p>This is a project for the 3rd course in Johns Hopkins University’s Data Science Specialization offered by <a href="http://coursera.org">Coursera</a>. The projects requires that data to be gathered and tidied with the following stipulations:</p>
 <p>Create one R script called run_analysis.R that does the following.</p>
 <ol start="0" style="list-style-type: decimal">
@@ -428,17 +428,17 @@ summary {
 <li>From the data set in step 4, create a second, independent tidy data set with the average of each variable for each activity and each subject.</li>
 </ol>
 </div>
-<div id="raw-data" class="section level2">
-<h2>Raw data:</h2>
+<div id="raw-data" class="section level3">
+<h3>Raw data:</h3>
 <p>Source: Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. A Public Domain Dataset for Human Activity Recognition Using Smartphones. 21th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning, ESANN 2013. Bruges, Belgium 24-26 April 2013.</p>
 <p>The raw data is stored in the <a href="https://github.com/sarahmass/dataScienceCoursera/tree/main/gettingCleaningdata/UCI%20HAR%20Dataset">UCI HAR Dataset directory</a></p>
 <p>Within the UCI HAR Dataset directory, there is a <a href="https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/UCI%20HAR%20Dataset/README.txt">ReadMe</a> describing the data and how it was collected. The subject ID’s, normalized data, and activity labels will be found with in the sub-directories: <a href="https://github.com/sarahmass/dataScienceCoursera/tree/main/gettingCleaningdata/UCI%20HAR%20Dataset/train">train</a> and <a href="https://github.com/sarahmass/dataScienceCoursera/tree/main/gettingCleaningdata/UCI%20HAR%20Dataset/test">test</a>.</p>
 <p>The original purpose of the data was to use it to train a Neural Network to classify the activity being performed by each subject. It was separated into two sets, a training set and a testing set. The Neural Network required that the Id’s, collected metrics, and the labeled outcome be saved in separate places. Within their respective sub-directory the ID’s can be found in the files labeled subject_train.txt and subject_test.txt, the data with 561 columns of collected metrics can be found in X_train.txt and X_test.txt, and the activity labels are in y_train.txt and y_test.txt. Before the testing and training data can be merged the ID, activity, and data columns need to be merged together, and then the rows for the testing and training subjects can be merged.</p>
 <p>The metric data collected for each subject for each activity have the 561 row names found in the feature.txt file in the UCI HAR Dataset Directory. The metric variables are described in the feature_info.txt file.</p>
 </div>
-<div id="getting-and-cleaning-the-data" class="section level2">
-<h2>Getting and Cleaning the Data:</h2>
-<p>The raw data as described above will be cleaned as described in the Purpose section. I have included a <a href="%7Badd%20link%7D">CodeBook.md</a> to detail my process, the code in <a href="%7Badd%20link%7D">run_analysis.R</a>, and the two data sets in {fill in the file names and links here}.</p>
+<div id="getting-and-cleaning-the-data" class="section level3">
+<h3>Getting and Cleaning the Data:</h3>
+<p>The raw data as described above will be cleaned as described in the Purpose section. I have included a <a href="%7Badd%20link%7D">CodeBook.md</a> to detail my process, the code in <a href="https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/run_analysis.R">run_analysis.R</a>, and the two data sets in <a href="https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/subActivity_all.csv">subActivity_all.csv</a> and <a href="https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/SubActivity_means.csv">SubActivity_means.csv</a>.</p>
 </div>
 </div>
 
