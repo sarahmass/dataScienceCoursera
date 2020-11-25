@@ -103,7 +103,7 @@ names(data) <- gsub("\\()","", names(data))
 names(data) <- gsub("-", ".", names(data))
 
 # Write data set to a .csv file:
-write.csv(data, file = "subActivity_all.csv", row.names = FALSE)
+write.table(data, file = "subActivity_all.txt", row.names = FALSE)
 
 
 ################################################################################
@@ -119,4 +119,4 @@ SubActivityMeans <- data %>% group_by(subjectId, activity) %>%
                              summarize_all(mean,.groups="keep")
 
 #write dataframe to .csv file:
-write.csv(SubActivityMeans, file="SubActivity_means.csv", row.names = FALSE)
+write.table(SubActivityMeans, file="subActivity_means.txt", row.names = FALSE)

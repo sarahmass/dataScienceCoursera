@@ -36,7 +36,7 @@ The metric data collected for each subject for each activity have the 561 row na
   
 ### Getting and Cleaning the Data:
 
-The raw data as described above will be cleaned as described in the Purpose section.  I have included a [CodeBook.md]({add link}) to detail my process, the code in [run_analysis.R](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/run_analysis.R), and the two data sets in [subActivity_all.csv](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/subActivity_all.csv) and [SubActivity_means.csv](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/SubActivity_means.csv).
+The raw data as described above will be cleaned as described in the Purpose section.  I have included a [CodeBook.md]({add link}) to detail my process, the code in [run_analysis.R](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/run_analysis.R), and the two data sets in [subActivity_all.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/subActivity_all.txt) and [subActivity_means.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/subActivity_means.txt).
 
 
 
