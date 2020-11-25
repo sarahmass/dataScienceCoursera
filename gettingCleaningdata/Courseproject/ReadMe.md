@@ -25,9 +25,9 @@ Create one R script called run_analysis.R that does the following.
 Source:
 Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. A Public Domain Dataset for Human Activity Recognition Using Smartphones. 21th European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning, ESANN 2013. Bruges, Belgium 24-26 April 2013.
 
-The raw data is stored in the [UCI HAR Dataset directory](https://github.com/sarahmass/dataScienceCoursera/tree/main/gettingCleaningdata/UCI%20HAR%20Dataset)
+The raw data is stored in the [UCI HAR Dataset directory](https://github.com/sarahmass/dataScienceCoursera/tree/main/gettingCleaningdata/Courseproject/UCI%20HAR%20Dataset)
 
-Within the UCI HAR Dataset directory, there is a [ReadMe](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/UCI%20HAR%20Dataset/README.txt) describing the data and how it was collected.  The subject ID's, normalized data, and activity labels will be found with in the sub-directories: [train](https://github.com/sarahmass/dataScienceCoursera/tree/main/gettingCleaningdata/UCI%20HAR%20Dataset/train) and [test](https://github.com/sarahmass/dataScienceCoursera/tree/main/gettingCleaningdata/UCI%20HAR%20Dataset/test).
+Within the UCI HAR Dataset directory, there is a [ReadMe](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/Courseproject/UCI%20HAR%20Dataset/README.txt) describing the data and how it was collected.  The subject ID's, normalized data, and activity labels will be found with in the sub-directories: [train](https://github.com/sarahmass/dataScienceCoursera/tree/main/gettingCleaningdata/Courseproject/UCI%20HAR%20Dataset/train) and [test](https://github.com/sarahmass/dataScienceCoursera/tree/main/gettingCleaningdata/Courseproject/UCI%20HAR%20Dataset/test).
 
 The original purpose of the data was to use it to train a Neural Network to classify the activity being performed by each subject.  It was separated into two sets, a training set and a testing set.  The Neural Network required that the Id's, collected metrics, and the labeled outcome be saved in separate places.  Within their respective sub-directory the ID's can be found in the files labeled subject_train.txt and subject_test.txt, the data with 561 columns of collected metrics can be found in X_train.txt and X_test.txt, and the activity labels are in y_train.txt and y_test.txt.  Before the testing and training data can be merged the ID, activity, and data columns need to be merged together, and then the rows for the testing and training subjects can be merged.  
 
@@ -36,7 +36,7 @@ The metric data collected for each subject for each activity have the 561 row na
   
 ### Getting and Cleaning the Data:
 
-The raw data as described above will be cleaned as described in the Purpose section.  I have included a [CodeBook.md]({add link}) to detail my process, the code in [run_analysis.R](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/run_analysis.R), and the two data sets in [subActivity_all.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/subActivity_all.txt) and [subActivity_means.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/subActivity_means.txt).
+The raw data as described above will be cleaned as described in the Purpose section.  I have included a [CodeBook.md](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/Courseproject/CodeBook.md) to detail my process, the code in [run_analysis.R](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/Courseproject/run_analysis.R), and the two data sets in [subActivity_all.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/Courseproject/subActivity_all.txt) and [subActivity_means.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/Courseproject/subActivity_means.txt).
 
 
 

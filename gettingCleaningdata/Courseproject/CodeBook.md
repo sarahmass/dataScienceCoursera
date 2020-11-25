@@ -1,6 +1,6 @@
 # CodeBook
 
-The raw data can be found in several files within the [UCI HAR Dataset directory](https://github.com/sarahmass/dataScienceCoursera/tree/main/gettingCleaningdata/UCI%20HAR%20Dataset):
+The raw data can be found in several files within the [UCI HAR Dataset directory](https://github.com/sarahmass/dataScienceCoursera/tree/main/gettingCleaningdata/Courseproject/UCI%20HAR%20Dataset):
 
 1. Measured variables can be found in test/X_test.txt, and train/X_train.txt.
    These files have a total of 10299 objects between the two of them, and have
@@ -33,7 +33,7 @@ in temporary variables.  The ID's and the activity codes were merged with the
 numerical data using the cbind() method for both sets.  Then column names were
 applied to the columns for each data set by assigning names(test_data) and 
 names(train_data) the values: subjectId, activity, and the names read in from 
-[feature.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/UCI%20HAR%20Dataset/features.txt).
+[feature.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/Courseproject/UCI%20HAR%20Dataset/features.txt).
 
 At this point temporary variables that held the column names, the subject Id's and 
 activities for each set can now be discarded from memory. So the rm() command is called
@@ -56,18 +56,18 @@ the dataframe dimensions are 10299 x 81.
 
 ### Step 3:
 
-The table of activity codes and labels is stored in [activity_labels.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/UCI%20HAR%20Dataset/activity_labels.txt).  After reading in the table with read.table(), I mutated the data table by using the cut() method to convert the numerical class labels into factor labels with the readable labels: WALKING, wALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING,STANDING, and LAYING.  
+The table of activity codes and labels is stored in [activity_labels.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/Courseproject/UCI%20HAR%20Dataset/activity_labels.txt).  After reading in the table with read.table(), I mutated the data table by using the cut() method to convert the numerical class labels into factor labels with the readable labels: WALKING, wALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING,STANDING, and LAYING.  
 
 ### Step 4: 
 
-The variable names that were assigned in step zero were readable labels, but they had special characters (dashes and parentheses) that would require them to be encased in `` when using them to subset the dataframe.  To fix this all dashes, "-" were replaced with dots "." (which are allowed in variable names in R) and all parentheses were removed. These changes were made using the gsub() method twice on names(data) and the names(data) were reassigned with these new modifications. The dataset was then written to the file [subActivity_all.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/subActivity_all.txt).
+The variable names that were assigned in step zero were readable labels, but they had special characters (dashes and parentheses) that would require them to be encased in `` when using them to subset the dataframe.  To fix this all dashes, "-" were replaced with dots "." (which are allowed in variable names in R) and all parentheses were removed. These changes were made using the gsub() method twice on names(data) and the names(data) were reassigned with these new modifications. The dataset was then written to the file [subActivity_all.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/Courseproject/subActivity_all.txt).
 
-The variable values except for subject ID and activity, are all normalized measurement values bounded within [-1,1].  The original Acceleration units of measurements were in standard gravity units 'g' while the gyroscope measured angular velocity in radians/second. More about this can be read in the raw data's [ReadMe](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/UCI%20HAR%20Dataset/README.txt).  
+The variable values except for subject ID and activity, are all normalized measurement values bounded within [-1,1].  The original Acceleration units of measurements were in standard gravity units 'g' while the gyroscope measured angular velocity in radians/second. More about this can be read in the raw data's [ReadMe](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/Courseproject/UCI%20HAR%20Dataset/README.txt).  
 
 
 ### Step 5:
 
-From the data set in step 4, a new data set is created by first grouping the data by subjectId and activity using the group_by() method.  Then using the summarize_all method each of the 79 mean and standard deviation variables are averaged using the mean() function and stored in a new data frame.  This data frame is then written using write.table() to the file [SubActivity_means.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/SubActivity_means.txt).
+From the data set in step 4, a new data set is created by first grouping the data by subjectId and activity using the group_by() method.  Then using the summarize_all method each of the 79 mean and standard deviation variables are averaged using the mean() function and stored in a new data frame.  This data frame is then written using write.table() to the file [SubActivity_means.txt](https://github.com/sarahmass/dataScienceCoursera/blob/main/gettingCleaningdata/Courseproject/subActivity_means.txt).
 
 
 
