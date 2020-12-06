@@ -94,7 +94,7 @@ library(ggplot2)
 data(mpg)
 qplot(displ,hwy,data = mpg)
 
-Lesson 2, Video 2: Base Plotting (part 1)
+## Lesson 2, Video 2: Base Plotting (part 1)
 
 # ?par will open the page for parameter information
 # ?plot will give the default methods for plot graphs
