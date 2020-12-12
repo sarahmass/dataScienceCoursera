@@ -37,3 +37,20 @@ myplclust(hclustering,lab.col = unclass(sub1$activity))
 
 kClust <-kmeans(sub1[,-c(562,563)], centers = 6, nstart = 100)
 table(kClust$cluster,sub1$activity)
+
+## Histograms of Log10(emission) levels
+par(mfrow=c(1,4))
+hist(log10(NEI$Emissions[NEI$year==1999]), col = 4, 
+     freq = FALSE,
+     ylim = c(0,0.35),
+     xlim = c(-10,5), 
+     breaks = 20)
+abline(v=log10(1),lwd=2)
+hist(log10(NEI$Emissions[NEI$year==2002]), col = 3, freq = FALSE,ylim = c(0,0.35),breaks = 20)
+abline(v=log10(1),lwd=2)
+hist(log10(NEI$Emissions[NEI$year==2005]), col = 2, freq = FALSE,ylim=c(0,0.35),breaks = 20)
+abline(v=log10(1),lwd=2)
+hist(log10(NEI$Emissions[NEI$year==2008]), col = "yellow", freq = FALSE,ylim=c(0,0.35),breaks = 20)
+abline(v=log10(1),lwd=2)
+
+
