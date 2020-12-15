@@ -6,7 +6,6 @@
 
 library(dplyr)
 library(ggplot2)
-library(lattice)
 
 ## Location of Data for the Project:
 url = "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
@@ -61,13 +60,14 @@ g <- g + geom_col() +
           subtitle = "Baltimore City, Maryland",
           caption = paste("Data Source:",url),
           y = "Total (Tons)") +
+     geom_text(aes(label = round(total.em,1)),colour="black", fontface="bold", vjust=-0.2)
      theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),
            plot.subtitle = element_text(hjust = 0.5, size = 14, face = "bold"),
-           plot.caption = element_text(hjust = 0, size = 10 , color = "blue",face ="italic"),
+           plot.caption = element_text(hjust = 0, size = 9 , color = "blue",face ="italic"),
            axis.title.x = element_blank(),
            legend.title = element_blank(),
            legend.background = element_rect(colour = NA, fill = 'grey92'),
-           legend.text = element_text(size=10),
+           legend.text = element_text(size=9),
            legend.margin = margin(0.0,0.0,0.0,0.0,"cm"),
            legend.position = c(.7,.78),
            legend.direction = "vertical",

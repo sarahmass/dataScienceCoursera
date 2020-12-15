@@ -8,6 +8,7 @@
 
 library(dplyr)
 library(ggplot2)
+library(ggrepel)
 
 
 ## Location of Data for the Project:
@@ -55,17 +56,40 @@ SCC<- SCC[mob.veh,] %>% select(SCC:SCC.Level.Four)
 
 ## Merge NEI and SCC
 nei.scc <- merge(NEI,SCC, by = "SCC", )
-nei.scc<- mutate(nei.scc, year = factor(year))
-nei.scc<-group_by(nei.scc,EI.Sector,fips,year)
+#nei.scc<- mutate(nei.scc, year = factor(year))
+nei.scc<-group_by(nei.scc,EI.Sector, fips,year)
 totals<- summarize(nei.scc,total.em=sum(Emissions))
-fips2location <- data.frame(fips=c("24510","06037" ), location = c("Los Angeles County,\nCalifornia", "Baltimore City,\n Maryland"))
-totals <- merge(totals,fips2location,by="fips")
 
-g <- ggplot(totals,aes(x=year,y = total.em, fill = EI.Sector))
-g <- g + geom_col() + facet_wrap(~location)+
+      
+
+# ## These next two chunks of code was to help me investigate the data.       
+# #totals <- summarize(neiscc1, tot.emissions = sum(Emissions), .group = "keep")
+# ref <- summarize(totals,minyear = min(year))
+# ref<- merge(ref,totals,by.x=c("SCC","minyear"),by.y=c("SCC","year"), all.y = FALSE)
+# ref<- select(ref,SCC,minyear, total.em)
+# names(ref) <- c("SCC", "ref.year", "ref.em")
+# totals<-merge(totals, ref, by="SCC")
+# totals<-mutate(totals, ratio = total.em/ref.em,year = as.factor(year) )
+
+
+fips2location <- data.frame(fips=c("06037", "24510"), location = c("Los Angeles County,\nCalifornia", "Baltimore City,\n Maryland"))
+totals <- merge(totals,fips2location,by="fips")
+totals<- mutate(totals, EI.Sector = factor(EI.Sector))
+
+g <- ggplot(totals,aes(x=factor(year),y = total.em, fill = EI.Sector))
+g <- g + geom_col() + facet_grid(location~., ) +   #scale = "free"
      labs(title = "PM2.5 Emissions: All  Mobile Vehicles",
           caption = paste("Data Source:",url),
           y = "Total (Tons)") +
+     geom_label_repel(aes(label = round(total.em),fill = EI.Sector),
+                   direction = "y",
+                   #arrow = arrow(length = unit(0.03, "npc"), type = "closed", ends = "first"),
+                   show.legend = FALSE,
+                   force = 2,
+                   hjust = 2,
+                   position = position_stack(vjust = .5),
+                   color="black", 
+                   fontface="bold") +
      theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),
            plot.caption = element_text(hjust = 0, size = 9 , color = "blue",face ="italic"),
            axis.title.x = element_blank(),
@@ -78,7 +102,9 @@ g <- g + geom_col() + facet_wrap(~location)+
            legend.key.height = unit(.2,"cm"),
            legend.key.width = unit(.15,"cm")) +
            guides(fill=guide_legend(ncol = 2 ))
+      
+
 g            
-png(file = 'plot6.png')
+png(file = 'plot6b.png')
 print(g)
 dev.off()       
