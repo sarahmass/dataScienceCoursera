@@ -6,6 +6,7 @@
 
 library(dplyr)
 library(ggplot2)
+library(ggrepel)
 
 ## Location of Data for the Project:
 url = "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
@@ -51,8 +52,9 @@ SCC<- SCC[mob.veh,] %>% select(SCC:SCC.Level.Four)
 ## Merge NEI and SCC
 nei.scc <- merge(NEI,SCC, by = "SCC", )
 nei.scc<- mutate(nei.scc, year = factor(year))
-nei.scc<-group_by(nei.scc, SCC,EI.Sector,year)
+nei.scc<-group_by(nei.scc,EI.Sector,year)
 totals<- summarize(nei.scc,total.em=sum(Emissions))
+totals<-mutate(totals, EI.Sector = factor(EI.Sector))
 
 g <- ggplot(totals,aes(x=year,y = total.em, fill = EI.Sector))
 g <- g + geom_col() + 
@@ -60,21 +62,31 @@ g <- g + geom_col() +
           subtitle = "Baltimore City, Maryland",
           caption = paste("Data Source:",url),
           y = "Total (Tons)") +
-     geom_text(aes(label = round(total.em,1)),colour="black", fontface="bold", vjust=-0.2)
+
+     geom_label_repel(aes(label = round(total.em),fill = EI.Sector),
+                      direction = "y",
+                      #arrow = arrow(length = unit(0.03, "npc"), type = "closed", ends = "first"),
+                      show.legend = FALSE,
+                      force = 1,
+                      hjust = 2,
+                      position = position_stack(vjust = 0.5),
+                      color="black", 
+                      fontface="bold") +
+
      theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),
            plot.subtitle = element_text(hjust = 0.5, size = 14, face = "bold"),
            plot.caption = element_text(hjust = 0, size = 9 , color = "blue",face ="italic"),
            axis.title.x = element_blank(),
            legend.title = element_blank(),
            legend.background = element_rect(colour = NA, fill = 'grey92'),
-           legend.text = element_text(size=9),
+           legend.text = element_text(size=8),
            legend.margin = margin(0.0,0.0,0.0,0.0,"cm"),
-           legend.position = c(.7,.78),
-           legend.direction = "vertical",
-           legend.key.height = unit(.2,"cm"),
-           legend.key.width = unit(.2,"cm")) +
-           guides(fill=guide_legend(ncol = 1 ))
+           legend.position = "bottom", #c(.7,.78),
+           legend.direction = "horizontal",
+           legend.key.height = unit(.15,"cm"),
+           legend.key.width = unit(.13,"cm")) +
+           guides(fill=guide_legend(ncol = 2 ))
 g            
-png(file = 'plot5.png')
+png(file = 'plot5b.png')
 print(g)
 dev.off()       

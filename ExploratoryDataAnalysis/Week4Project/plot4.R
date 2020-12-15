@@ -66,6 +66,7 @@ NEI <- NEI %>%
        filter(SCC %in% coalcomb.scc)
 
 ## merge the datasets together so that we have more options of grouping
+
 neiscc <- merge(NEI,SCC,by="SCC") 
 
 

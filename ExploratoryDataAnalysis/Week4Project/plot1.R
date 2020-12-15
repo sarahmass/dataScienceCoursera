@@ -8,13 +8,20 @@
 ##             1999, 2002, 2005, and 2008.
 
 library(dplyr)
-
-## Down load the data for the Project:
+## Location of data for the Project:
 url = "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
-download.file(url,"exdataFNEI.zip")
 
-## unzip data and read to a table
-unzip("exdataFNEI.zip")
+#Check for files in the working directory
+wd.files <- dir()
+data.files <- c("summarySCC_PM25.rds", "Source_Classification_Code.rds")
+
+for (f in data.files){
+  if(!( f %in% wd.files)){
+    download.file(url,"exdataFNEI.zip") 
+    ## unzip data and read to a table
+    unzip("exdataFNEI.zip")    
+  }  
+}
 
 ## Read the data into their variables
 NEI <- readRDS("summarySCC_PM25.rds")
