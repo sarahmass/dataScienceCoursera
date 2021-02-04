@@ -1,5 +1,8 @@
 ---
-title: "Investigating the Effect of Vitamin C on Tooth Growth in Guinea Pigs"
+title: |
+  <center> Investigating the Effect of Vitamin C</center>
+  <center> on Tooth Growth in Guinea Pigs </center>
+
 author: "Sarah Massengill"
 date: "2/2/2021"
 output: pdf_document
@@ -216,7 +219,7 @@ data.summary
 From RStudio Documentation:
 
 
-```{r helpcode sample}
+```{r helpcode sample,fig.height=4,}
 require(graphics)
 coplot(len ~ dose | supp, data = ToothGrowth, panel = panel.smooth,
        xlab = "ToothGrowth data: length vs dose, given type of supplement")
