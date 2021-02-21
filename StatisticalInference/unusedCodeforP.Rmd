@@ -1,0 +1,83 @@
+---
+title: "unused code and analysis"
+author: "Sarah Massengill"
+date: "2/2/2021"
+output: html_document
+---
+## Sampling Distribution variance
+
+The distribution of variances for the 1000 exponential samples ($n=40$, $\lambda=0.2$), will behave much like the distribution of means.  The variances will be normmally distributed with the mean equal to the population variance, which is theoretically determined to be $\frac{1}{\lambda^2}=\frac{1}{(0.2)^2}=25$, and standard deviation equal to the population standard deviation divided by the square root of n. So, $sd = \frac{\sigma}{\sqrt{n}}=frac{5}{\sqrt(40)}\approx 0.79$.  As be for below, the plot of the 1000 variances are plotted in a histogram with the normal curve that it should resemble plotted over the top.  
+
+```{r}
+set.seed(123)
+smu<-NULL
+svar<-NULL
+n=40
+for (i in 1:1000){
+  sample = rexp(n,rate = 0.2)
+  cmu<-mean(sample)
+  cvar<-40/39*var(sample)
+  #print(cvar)
+  
+  smu<-c(smu,cmu)
+  svar<-c(svar,cvar)
+}
+var.mean = mean(svar)
+hist(svar,prob=T, ylim=c(0,0.06),breaks=15,
+     main = "Distribution of 1,000 Sample Variances\n from an Exp Dist with n = 40",
+     cex.main = 1,
+     xlab = "sample variance values")
+abline(v=var.mean,col="red")
+abline(v=25,col="blue")
+curve(dnorm(x,mean=25, sd=sd(svar)), col="blue", add=T,lwd=2)
+
+conf.int<- var.mean + c(-1,1)*qnorm(0.995)*25/sqrt(40)
+
+legend("topright", 
+  legend = c("Theoretical Mean of Variances: 25", 
+             paste("sampling Mean of Variances:",round(samplingmu,2)), 
+             paste("Confidence Interval: ",
+                   "[",
+                   round(conf.int[1],2),
+                   ", ",
+                   round(conf.int[2],2),"]"
+                            ,sep=""),
+             paste("Theoretical Standard Error: ",
+                   round(5/sqrt(40),2),sep=""),
+             paste("Calculated Standard Error: ",
+                   round(sd(smu),2),sep="")),
+  col = c("blue","red", "0","0","0"), 
+  pch = "-", 
+  bty = "n", 
+  pt.cex = 2, 
+  cex = .9, 
+  text.col = "black", 
+  horiz = F , 
+  #inset = c(0, 0.2)
+  )
+var.mean
+sd(svar)
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
