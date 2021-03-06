@@ -1,0 +1,208 @@
+---
+title: "Untitled"
+author: "Sarah Massengill"
+date: "3/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,message = FALSE)
+```
+
+## Background
+
+Using devices such as Jawbone Up, Nike FuelBand, and Fitbit it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how much of a particular activity they do, but they rarely quantify how well they do it. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website here: http://groupware.les.inf.puc-rio.br/har (see the section on the Weight Lifting Exercise Dataset). 
+
+Six young health participants were asked to perform one set of 10 repetitions of the Unilateral Dumbbell Biceps Curl in five different fashions:  
+* Class A: exactly according to the specification  
+* Class B: throwing the elbows to the front  
+* Class C: lifting the dumbbell only halfway  
+* Class D: lowering the dumbbell only halfway  
+* Class E: throwing the hips to the front  
+
+Read more: http://groupware.les.inf.puc-rio.br/har#ixzz6oBdIzdE6
+## Cross Validation
+I chose to create a training set and a test set. 70% of the observations were randomly selected using the R function from the caret package 'createDataPartition()'s. 
+
+### Tidying the Data
+
+Unfortunately, the test set will just be a snapshot in time so this will not be a forecasting problem. This means that the variables that indicate a time do not have any reasonable reason to be part of the model. The window variables also refer to the beginning and end of a time series, these won't be necessary either.  There are factor variables that were computed as averages or composites of all the window data, and these variables are only non-NA or non-empty at the end of a window, so these variables are removed from consideration.  Since each person performs 10 reps of each outcome, there is no reason to keep identifying variables as predictors. After noticing total columns for the acceleration of the arms, forearms, dumbbell, and belts, I selected only those variables and plotted the values vs the class.  There was no clear correlation with the total-variables between classes so those were removed. After removing all of these variables there were still a total of 49 possible predictors.  At this point I used my knowledge of form and weight lifting (decisions had to be made some how) and I decided to look at the rotation variables (row, pitch, and yaw) for each of the sensor positions.  Row and pitch are rotations about the two horizontal axes and the yaw is the rotation about the vertical axis.  With this final reduction I had 12 predictors to work.  Bellow are a list of the chosen predictor variables to work with.  
+
+* roll_belt  
+* pitch_belt  
+* yaw_belt  
+* roll_arm  
+* pitch_arm  
+* yaw_arm  
+* roll_dumbbell  
+* pitch_dumbbell  
+* yaw_dumbbell  
+* roll_forearm  
+* pitch_forearm  
+* yaw_forearm  
+
+
+```{r getdata,echo=FALSE,message=FALSE}
+
+## Download file
+url = "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+download.file(url,"./data/train.csv")
+url = "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+download.file(url,"./data/test.csv")
+```
+```{r loadtrainingdata}
+library(caret)
+data<-read.csv("./data/train.csv")
+
+## Create a "train" and "test" set from the training data
+## use the testing data provided as a final validation step
+
+inTrain<-createDataPartition(y=data$classe, p = 0.7,list=FALSE)
+training<-data[inTrain,]
+testing<-data[-inTrain,]
+```
+
+```{r ExploreAndReduce}
+library(dplyr)
+# str(testing)
+# Many of the variables have a majority of the data as NA except when there was 
+# a feature created by summarizing raw data.  Unfortunately, the test data was a
+# subset of all entries not just the summarized features used by original researchers.
+# This analysis will have to be a bit of a toy example that looks for 
+# correlation between the predictors and the result and uses that to classify the 
+# test data's output.  This is not a time series assignment.  :(
+
+# collecting columns that don't have NA's in them
+
+training$classe<-as.factor(training$classe)
+is.na.cols<-apply(training,2,is.na)
+is.na.cols<-apply(is.na.cols,2,sum)
+is.na.cols<-is.na.cols[is.na.cols>0]
+rem.col<-names(is.na.cols)
+rem.col<-c(rem.col,"X","num_window")
+training<-select(training,-c(where(is.character),grep("time",names(training)),rem.col))
+
+
+length(names(training)) ## started at 160 possible predictors
+variables.to.keep<-names(training)
+```
+
+```{r,exploreCorelation}
+library(ggpubr)
+head(training)
+#apply(training,2,range)"total_accel_belt"     "total_accel_arm"      "total_accel_dumbbell" "total_accel_forearm" 
+a<-ggplot(data=training,aes(y=total_accel_belt,fill=classe))+geom_boxplot()
+b<-ggplot(data=training,aes(y=total_accel_arm,colour=classe)) +geom_boxplot()
+c<-ggplot(data=training,aes(y=total_accel_dumbbell,colour=classe)) +geom_boxplot()
+d<-ggplot(data=training,aes(y=total_accel_forearm,colour=classe)) +geom_boxplot()
+ggarrange(a,b,c,d,ncol = 2, nrow = 2)
+#The totals don't seem to give anymore information
+
+
+
+```
+
+```{r,PitchRowYaw}
+## remove totals from the list.
+inTot<-grep("total",names(training))
+training<-select(training,-grep("total",names(training)))
+#length(names(training))
+
+# lets look pitch, roll, yaw of arm, belt, dumbbell,forearm.  These are
+# rotations about the three axis. Based on my 
+# experience these rotations often contribute to # incorrect form.
+training<-select(training, c("classe",grep("pitch|roll|yaw",names(training))))
+#length(names(training))
+names(training)
+testing<-select(testing,names(training))
+```
+
+
+```{r, parallel}
+library(parallel)
+library(doParallel)
+cluster <- makeCluster(detectCores() - 1) # convention to leave 1 core for OS
+registerDoParallel(cluster)
+```
+
+```{r,randomforest,cache=TRUE} 
+## resampling: bootstrapping, 25, takes 10.5 minutes to run
+system.time(rf.mod<-train(x=training[,-1],y=training$classe,method='rf', trControl=trainControl(allowParallel = TRUE)))
+```
+
+```{r,rfwithcv,cache=TRUE}
+#takes almost 1 minutes to run
+system.time(rfcv.mod<-train(x=training[,-1],y=training$classe,method='rf',trControl=trainControl(method='cv',number=5,allowParallel = TRUE)))
+
+```
+```{r,boostingmod, cache=TRUE}
+system.time(gbm.mod<-train(x=training[,-1],y = training$classe,method='gbm',trControl=trainControl(allowParallel = TRUE),verbose=F))
+testpred.gbm<-predict(gbm.mod,testing[,-1])
+```
+
+```{r}
+stopCluster(cluster)
+registerDoSEQ()
+```
+
+
+```{r, rfconfusion}
+
+
+testpred<-predict(rf.mod,testing[,-1])
+confusionMatrix(testpred,factor(testing$classe))
+confusionMatrix(rf.mod)
+```
+
+```{r,rfcvConfusion}
+testpred.cv<-predict(rfcv.mod,testing[,-1])
+
+confusionMatrix(testpred.cv,factor(testing$classe))
+confusionMatrix(rfcv.mod)
+
+```
+
+
+```{r,boostingConf}
+confusionMatrix(testpred.gbm,factor(testing$classe))
+confusionMatrix(gbm.mod)
+```
+
+
+```{r, 20testing variables}
+
+valdata<-read.csv("./data/test.csv")
+dim(valdata)
+
+
+predval<-predict(rf.mod,valdata)
+predval
+
+
+predval.cv<-predict(rfcv.mod,valdata)
+predval.cv
+
+predval.gbm<-predict(gbm.mod,valdata)
+predval.gbm
+```
+
+```{r,plots}
+
+
+a<-qplot(testing$classe,testpred, color=testpred)+geom_jitter()
+b<-qplot(testing$classe,testpred.cv, color=testpred.cv)+geom_jitter()
+c<-qplot(testing$classe,testpred.gbm, color=testpred.gbm)+geom_jitter()
+ggarrange(a,b,c,ncol = 2, nrow = 2)
+```
+```{r}
+rf.mod
+print('\n ')
+rfcv.mod
+print('\n ')
+gbm.mod
+
+```
+
+```{r,sessioninfo}
+sessionInfo()
+```
